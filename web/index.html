@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10171c">
+  <title>EPSION Acoustic Leak Finder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="dashboard">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">FIELD INSTRUMENT / V1.0</p>
+        <h1>EPSION <span>Acoustic Leak Finder</span></h1>
+      </div>
+      <div class="mode" id="demoMode">DEMO MODE</div>
+    </header>
+
+    <section class="status-panel" aria-label="Leak status">
+      <div class="status-copy">
+        <p class="eyebrow">ANALYSIS STATE</p>
+        <strong id="leakStatus" class="status-normal">NORMAL</strong>
+        <p id="statusDetail">Monitoring acoustic input</p>
+      </div>
+      <div class="status-scale" aria-label="Threshold scale">
+        <span>NORMAL &lt; 10</span><span>WARNING 10–29.9</span><span>LEAK ≥ 30</span>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Live measurements">
+      <article><p>RMS LEVEL</p><strong><span id="rms">--</span> <small>dB</small></strong></article>
+      <article><p>DOMINANT FREQUENCY</p><strong><span id="frequency">--</span> <small>Hz</small></strong></article>
+      <article><p>SIGNAL STRENGTH</p><strong><span id="signal">--</span> <small>%</small></strong></article>
+    </section>
+
+    <section class="charts" aria-label="Signal visualizations">
+      <article class="chart-card"><div class="chart-title"><span>LIVE WAVEFORM</span><small id="waveSource">DEMO SIGNAL</small></div><canvas id="waveform" width="720" height="210" aria-label="Live waveform"></canvas></article>
+      <article class="chart-card"><div class="chart-title"><span>FREQUENCY SPECTRUM</span><small id="spectrumSource">DEMO SPECTRUM</small></div><canvas id="spectrum" width="720" height="210" aria-label="Frequency spectrum"></canvas></article>
+    </section>
+
+    <section class="system" aria-label="System health">
+      <div><span class="indicator" id="wifiDot"></span><p>WI-FI</p><strong id="wifi">CHECKING</strong></div>
+      <div><span class="indicator" id="esp32Dot"></span><p>ESP32</p><strong id="esp32">DEMO</strong></div>
+      <div><span class="indicator" id="sensorDot"></span><p>PIEZO SENSOR</p><strong id="sensor">CHECKING</strong></div>
+      <div><p>SAMPLING RATE</p><strong id="samplingRate">-- Hz</strong></div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
