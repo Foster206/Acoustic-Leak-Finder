@@ -43,4 +43,3 @@ h1 { margin:5px 0 0; font-size:1.25rem; letter-spacing:.05em; } h1 span { color:
 .connection-help strong,.connection-help code { color:var(--text); }
 @media (max-width:719px) { .topbar { grid-template-columns:1fr; }.mode { justify-self:start; } }
 @media (max-width:479px) { .metrics { grid-template-columns:1fr; }.metrics article { padding:16px; } }
-
