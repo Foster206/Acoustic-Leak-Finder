@@ -14,37 +14,40 @@
         <p class="eyebrow">FIELD INSTRUMENT / V1.0</p>
         <h1>EPSION <span>Acoustic Leak Finder</span></h1>
       </div>
-      <div class="mode" id="demoMode">DEMO MODE</div>
+      <div class="mode is-offline" id="demoMode" role="status">● ESP32 OFFLINE</div>
     </header>
 
-    <section class="status-panel" aria-label="Leak status">
+    <section class="status-panel" id="statusPanel" data-state="offline" aria-label="Leak status">
       <div class="status-copy">
         <p class="eyebrow">ANALYSIS STATE</p>
-        <strong id="leakStatus" class="status-normal">NORMAL</strong>
-        <p id="statusDetail">Monitoring acoustic input</p>
+        <strong id="leakStatus" class="status-offline" role="status">ESP32 OFFLINE</strong>
+        <p id="statusDetail">Waiting for a valid ESP32 response.</p>
       </div>
-      <div class="status-scale" aria-label="Threshold scale">
-        <span>NORMAL &lt; 10</span><span>WARNING 10–29.9</span><span>LEAK ≥ 30</span>
+      <div class="status-scale" aria-label="Device classification states">
+        <span>NORMAL</span><span>WARNING</span><span>LEAK DETECTED</span><span>SENSOR FAULT</span>
       </div>
     </section>
 
     <section class="metrics" aria-label="Live measurements">
-      <article><p>RMS LEVEL</p><strong><span id="rms">--</span> <small>dB</small></strong></article>
+      <article><p>RMS LEVEL</p><strong><span id="rms">--</span></strong></article>
       <article><p>DOMINANT FREQUENCY</p><strong><span id="frequency">--</span> <small>Hz</small></strong></article>
-      <article><p>SIGNAL STRENGTH</p><strong><span id="signal">--</span> <small>%</small></strong></article>
+      <article><p>API RESPONSE TIME</p><strong><span id="signal">--</span> <small>ms</small></strong></article>
     </section>
 
-    <section class="charts" aria-label="Signal visualizations">
-      <article class="chart-card"><div class="chart-title"><span>LIVE WAVEFORM</span><small id="waveSource">DEMO SIGNAL</small></div><canvas id="waveform" width="720" height="210" aria-label="Live waveform"></canvas></article>
-      <article class="chart-card"><div class="chart-title"><span>FREQUENCY SPECTRUM</span><small id="spectrumSource">DEMO SPECTRUM</small></div><canvas id="spectrum" width="720" height="210" aria-label="Frequency spectrum"></canvas></article>
+    <section class="charts" aria-label="Recent measured readings">
+      <article class="chart-card"><div class="chart-title"><span>RMS HISTORY</span><small id="waveSource">NO LIVE DATA</small></div><canvas id="waveform" width="720" height="210" role="img" aria-label="RMS history; no live data">Latest RMS is available in the measurement card above.</canvas></article>
+      <article class="chart-card"><div class="chart-title"><span>FREQUENCY HISTORY</span><small id="spectrumSource">NO LIVE DATA</small></div><canvas id="spectrum" width="720" height="210" role="img" aria-label="Frequency history; no live data">Latest frequency is available in the measurement card above.</canvas></article>
     </section>
 
     <section class="system" aria-label="System health">
-      <div><span class="indicator" id="wifiDot"></span><p>WI-FI</p><strong id="wifi">CHECKING</strong></div>
-      <div><span class="indicator" id="esp32Dot"></span><p>ESP32</p><strong id="esp32">DEMO</strong></div>
-      <div><span class="indicator" id="sensorDot"></span><p>PIEZO SENSOR</p><strong id="sensor">CHECKING</strong></div>
+      <div><span class="indicator offline" id="wifiDot" aria-hidden="true"></span><p>WI-FI</p><strong id="wifi">UNKNOWN</strong></div>
+      <div><span class="indicator offline" id="esp32Dot" aria-hidden="true"></span><p>ESP32</p><strong id="esp32">OFFLINE</strong></div>
+      <div><span class="indicator offline" id="sensorDot" aria-hidden="true"></span><p>PIEZO SENSOR</p><strong id="sensor">UNKNOWN</strong></div>
       <div><p>SAMPLING RATE</p><strong id="samplingRate">-- Hz</strong></div>
     </section>
+
+    <p class="connection-help">Connect to <strong>EPSION-LEAK-FINDER</strong> Wi-Fi. Browser API: <code>http://192.168.4.1/api/data</code> · 500 ms target refresh. History shows real scalar readings, not raw waveform or FFT bins.</p>
+    <noscript><p class="connection-help">JavaScript is required for live monitoring. No live sensor data is available while JavaScript is disabled.</p></noscript>
   </main>
   <script src="script.js"></script>
 </body>
