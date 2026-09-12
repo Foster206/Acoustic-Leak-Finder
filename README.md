@@ -1,8 +1,8 @@
-# Acoustic Leak Finder
+Acoustic Leak Finder
 
 An ESP32-based acoustic leak detection system with a lightweight web dashboard for real-time monitoring of acoustic measurements.
 
-## Overview
+Overview
 
 Acoustic Leak Finder uses an ESP32 to acquire acoustic sensor data and process the signal to obtain RMS and dominant-frequency measurements.
 
@@ -10,37 +10,62 @@ The ESP32 provides the processed measurements through a local HTTP API. A browse
 
 The system is designed to operate locally without requiring cloud infrastructure.
 
-## Features
+Features
 
-### ESP32
+ESP32
 
-- Acoustic signal acquisition
-- RMS measurement
-- Dominant frequency measurement
-- Firmware-based device classification
-- Sensor status monitoring
-- Wi-Fi status monitoring
-- Configurable sampling rate
-- Local Wi-Fi access point
-- HTTP API for real-time measurements
+Acoustic signal acquisition
 
-### Web Dashboard
+RMS measurement
 
-- Responsive, mobile-first interface
-- Real-time RMS display
-- Dominant frequency display
-- Device classification
-- Sensor and Wi-Fi status
-- Sampling rate
-- API response time
-- Recent RMS history
-- Recent frequency history
-- Automatic connection recovery
-- Offline indication
+Dominant frequency measurement
 
-## System Architecture
+Firmware-based device classification
 
-```text
+Sensor status monitoring
+
+Wi-Fi status monitoring
+
+Configurable sampling rate
+
+Local Wi-Fi access point
+
+HTTP API for real-time measurements
+
+Web Dashboard
+
+Responsive, mobile-first interface
+
+Real-time RMS display
+
+Dominant frequency display
+
+Device classification
+
+Sensor and Wi-Fi status
+
+Sampling rate
+
+API response time
+
+Recent RMS history
+
+Recent frequency history
+
+Automatic connection recovery
+
+Offline indication
+
+Dashboard
+
+The web dashboard provides a live view of the measurements and device state reported by the ESP32.
+
+A dashboard screenshot can be placed at docs/dashboard.png and displayed with:
+
+![Acoustic Leak Finder Dashboard](docs/dashboard.png)
+
+System Architecture
+
 Acoustic Source / Possible Leak
             │
             ▼
@@ -62,31 +87,96 @@ Acquisition       Analysis
             │
             ▼
       Web Dashboard
+
 Hardware
-Component	Purpose
-ESP32	Main microcontroller and wireless interface
-Acoustic Sensor	Captures acoustic/vibration signals
-Power Supply	Provides power to the system
-Supporting Components	Signal conditioning and interfacing
+
+Component
+
+Purpose
+
+ESP32
+
+Main microcontroller and wireless interface
+
+Acoustic Sensor
+
+Captures acoustic/vibration signals
+
+Power Supply
+
+Provides power to the system
+
+Supporting Components
+
+Signal conditioning and interfacing
 
 Hardware configuration may change between prototype revisions.
 
 Software
+
 Firmware
+
 ESP32
+
 Arduino/C++
+
 Wi-Fi Access Point
+
 HTTP API
+
 Acoustic signal processing
+
 Web Interface
+
 HTML
+
 CSS
+
 JavaScript
+
 HTML5 Canvas
 
 The web interface has no external JavaScript dependencies or build step.
 
+Firmware Setup
+
+The ESP32 firmware is required for the dashboard to receive live measurements.
+
+Requirements
+
+For the current project setup, you will need:
+
+ESP32 development board
+
+Arduino IDE or the development environment used for the firmware
+
+ESP32 board support package for the Arduino IDE
+
+Acoustic sensor and required supporting hardware
+
+Python 3 for running the local web server
+
+If the firmware uses additional libraries, install the libraries required by the firmware source before compiling. The exact library list will be documented here once the firmware source is published in the repository.
+
+The current repository structure reserves the esp32/ directory for the firmware. If the firmware source is not yet published in the repository, it must be added before another user can reproduce the complete system from source.
+
+When the firmware is available, open it in the Arduino IDE or the development environment used for the project, install the required ESP32 board support, select the correct ESP32 board, and upload the firmware to the device.
+
+Wi-Fi Configuration
+
+The ESP32 runs as a local Wi-Fi access point. Configure the access-point SSID and password in the firmware before uploading it.
+
+Use your own credentials locally. Do not commit a real Wi-Fi password to the public repository.
+
+For example:
+
+const char* AP_SSID = "Acoustic-Leak-Finder";
+const char* AP_PASSWORD = "YOUR_WIFI_PASSWORD";
+
+The example values above are placeholders. They do not change the credentials already stored on any ESP32 device.
+
 Measurements
+
 RMS
 
 RMS represents the measured magnitude of the acoustic signal.
@@ -126,14 +216,50 @@ Example response:
   "sensor": true,
   "samplingRate": 1000
 }
+
 API Fields
-Field	Type	Description
-rms	Number	Current RMS measurement
-frequency	Number	Dominant frequency
-status	String	Firmware classification
-wifi	Boolean	Wi-Fi state
-sensor	Boolean	Sensor state
-samplingRate	Integer	Current sampling rate
+
+Field
+
+Type
+
+Description
+
+rms
+
+Number
+
+Current RMS measurement
+
+frequency
+
+Number
+
+Dominant frequency
+
+status
+
+String
+
+Firmware classification
+
+wifi
+
+Boolean
+
+Wi-Fi state
+
+sensor
+
+Boolean
+
+Sensor state
+
+samplingRate
+
+Integer
+
+Current sampling rate
 
 RMS and frequency values must be finite, non-negative numbers.
 
@@ -159,7 +285,7 @@ Power on the ESP32 and allow it to create its local Wi-Fi access point.
 
 Connect the computer or phone to the Wi-Fi network configured by the ESP32.
 
-The Wi-Fi credentials are configured in the firmware and are not included in this repository.
+The SSID and password are configured in the firmware. The public repository does not contain a real Wi-Fi password.
 
 3. Start a Local Server
 
@@ -210,6 +336,7 @@ A valid response restores live monitoring.
 Browsers may throttle timers when the page is running in the background.
 
 Project Structure
+
 Acoustic-Leak-Finder/
 │
 ├── esp32/
@@ -220,22 +347,13 @@ Acoustic-Leak-Finder/
 │   ├── script.js
 │   └── style.css
 │
+├── docs/
+│   └── dashboard.png
+│
+├── LICENSE
 └── README.md
-Development
 
-The project is developed locally and the repository is synchronized with GitHub and GitLab.
-
-                 Local Repository
-                       │
-                    Commit
-                       │
-                  Push origin
-                   /        \
-                  /          \
-                 ▼            ▼
-              GitHub        GitLab
-
-The local repository is the primary development workspace.
+If the firmware source has not yet been published, the esp32/ directory is currently a placeholder for that source.
 
 Current Status
 
@@ -253,15 +371,29 @@ Future Work
 Possible improvements include:
 
 Improved acoustic leak classification
+
 Noise filtering
+
 Sensor calibration
+
 More robust frequency analysis
+
 Leak-location estimation
+
 Long-term data logging
+
 Multiple sensor support
+
 Battery-powered operation
+
 Improved enclosure for field deployment
+
 Machine-learning-based classification
+
+Contributing
+
+Suggestions, bug reports, and improvements are welcome. Open an issue or submit a pull request if you would like to contribute.
+
 License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
