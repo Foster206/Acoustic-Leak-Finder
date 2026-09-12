@@ -3,52 +3,239 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10171c">
-  <title>EPSION Acoustic Leak Finder</title>
+
+  <meta
+    name="description"
+    content="ESP32-based acoustic and vibration leak detection dashboard."
+  >
+
+  <meta name="theme-color" content="#0b1013">
+
+  <title>Acoustic Leak Finder</title>
+
+  <!-- Empty favicon prevents a 404 request hitting the ESP32 web server -->
+  <link rel="icon" href="data:,">
+
   <link rel="stylesheet" href="style.css">
+
+  <!-- defer: fetched early, executed after the DOM is parsed -->
+  <script src="script.js" defer></script>
 </head>
+
 <body>
+
   <main class="dashboard">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
     <header class="topbar">
+
       <div>
-        <p class="eyebrow">FIELD INSTRUMENT / V1.0</p>
-        <h1>EPSION <span>Acoustic Leak Finder</span></h1>
+        <p class="eyebrow">EMBEDDED ACOUSTIC MONITOR / V1.0</p>
+
+        <h1>
+          Acoustic <span>Leak Finder</span>
+        </h1>
       </div>
-      <div class="mode is-offline" id="demoMode" role="status">● ESP32 OFFLINE</div>
+
+      <!-- Visual badge only; the live announcement comes from the status panel -->
+      <div class="mode is-offline" id="demoMode" aria-hidden="true">
+        ● ESP32 OFFLINE
+      </div>
+
     </header>
 
-    <section class="status-panel" id="statusPanel" data-state="offline" aria-label="Leak status">
-      <div class="status-copy">
+
+    <!-- =========================
+         CURRENT ANALYSIS STATUS
+    ========================== -->
+    <section
+      class="status-panel"
+      id="statusPanel"
+      data-state="offline"
+      aria-label="Current leak detection status"
+    >
+
+      <!-- Single live region: state + detail are announced together, once -->
+      <div class="status-copy" role="status" aria-live="polite">
+
         <p class="eyebrow">ANALYSIS STATE</p>
-        <strong id="leakStatus" class="status-offline" role="status">ESP32 OFFLINE</strong>
-        <p id="statusDetail">Waiting for a valid ESP32 response.</p>
+
+        <strong id="leakStatus" class="status-offline">
+          ESP32 OFFLINE
+        </strong>
+
+        <p id="statusDetail">
+          Waiting for a valid ESP32 response.
+        </p>
+
       </div>
-      <div class="status-scale" aria-label="Device classification states">
-        <span>NORMAL</span><span>WARNING</span><span>LEAK DETECTED</span><span>SENSOR FAULT</span>
+
+
+      <!-- Decorative scale; script.js sets aria-current on the active state -->
+      <div class="status-scale" id="statusScale" aria-hidden="true">
+        <span data-state="normal">NORMAL</span>
+        <span data-state="warning">WARNING</span>
+        <span data-state="leak-detected">LEAK DETECTED</span>
+        <span data-state="sensor-fault">SENSOR FAULT</span>
       </div>
+
     </section>
 
-    <section class="metrics" aria-label="Live measurements">
-      <article><p>RMS LEVEL</p><strong><span id="rms">--</span></strong></article>
-      <article><p>DOMINANT FREQUENCY</p><strong><span id="frequency">--</span> <small>Hz</small></strong></article>
-      <article><p>API RESPONSE TIME</p><strong><span id="signal">--</span> <small>ms</small></strong></article>
+
+    <!-- =========================
+         LIVE MEASUREMENTS
+    ========================== -->
+    <section
+      class="metrics"
+      aria-label="Live measurements"
+    >
+
+      <article>
+        <p>RMS LEVEL</p>
+
+        <strong>
+          <span id="rms">--</span>
+          <!-- Adjust if your firmware reports a different unit -->
+          <small id="rmsUnit">raw</small>
+        </strong>
+      </article>
+
+
+      <article>
+        <p>DOMINANT FREQUENCY</p>
+
+        <strong>
+          <span id="frequency">--</span>
+          <small>Hz</small>
+        </strong>
+      </article>
+
+
+      <article>
+        <p>API RESPONSE TIME</p>
+
+        <strong>
+          <span id="signal">--</span>
+          <small>ms</small>
+        </strong>
+      </article>
+
     </section>
 
-    <section class="charts" aria-label="Recent measured readings">
-      <article class="chart-card"><div class="chart-title"><span>RMS HISTORY</span><small id="waveSource">NO LIVE DATA</small></div><canvas id="waveform" width="720" height="210" role="img" aria-label="RMS history; no live data">Latest RMS is available in the measurement card above.</canvas></article>
-      <article class="chart-card"><div class="chart-title"><span>FREQUENCY HISTORY</span><small id="spectrumSource">NO LIVE DATA</small></div><canvas id="spectrum" width="720" height="210" role="img" aria-label="Frequency history; no live data">Latest frequency is available in the measurement card above.</canvas></article>
+
+    <!-- =========================
+         HISTORY CHARTS
+    ========================== -->
+    <section
+      class="charts"
+      aria-label="Recent sensor measurements"
+    >
+
+      <article class="chart-card">
+
+        <div class="chart-title">
+          <span>RMS HISTORY</span>
+          <small id="waveSource">NO LIVE DATA</small>
+        </div>
+
+        <!-- script.js updates aria-label with the latest reading -->
+        <canvas
+          id="waveform"
+          width="720"
+          height="210"
+          role="img"
+          aria-label="RMS history; no live data"
+        >
+          Latest RMS measurement is available in the measurement card above.
+        </canvas>
+
+      </article>
+
+
+      <article class="chart-card">
+
+        <div class="chart-title">
+          <span>FREQUENCY HISTORY</span>
+          <small id="spectrumSource">NO LIVE DATA</small>
+        </div>
+
+        <!-- script.js updates aria-label with the latest reading -->
+        <canvas
+          id="spectrum"
+          width="720"
+          height="210"
+          role="img"
+          aria-label="Frequency history; no live data"
+        >
+          Latest frequency measurement is available in the measurement card above.
+        </canvas>
+
+      </article>
+
     </section>
 
-    <section class="system" aria-label="System health">
-      <div><span class="indicator offline" id="wifiDot" aria-hidden="true"></span><p>WI-FI</p><strong id="wifi">UNKNOWN</strong></div>
-      <div><span class="indicator offline" id="esp32Dot" aria-hidden="true"></span><p>ESP32</p><strong id="esp32">OFFLINE</strong></div>
-      <div><span class="indicator offline" id="sensorDot" aria-hidden="true"></span><p>PIEZO SENSOR</p><strong id="sensor">UNKNOWN</strong></div>
-      <div><p>SAMPLING RATE</p><strong id="samplingRate">-- Hz</strong></div>
+
+    <!-- =========================
+         SYSTEM HEALTH
+    ========================== -->
+    <section
+      class="system"
+      aria-label="System health"
+    >
+
+      <div>
+        <span class="indicator offline" id="wifiDot" aria-hidden="true"></span>
+        <p>WI-FI</p>
+        <strong id="wifi">UNKNOWN</strong>
+      </div>
+
+
+      <div>
+        <span class="indicator offline" id="esp32Dot" aria-hidden="true"></span>
+        <p>ESP32</p>
+        <strong id="esp32">OFFLINE</strong>
+      </div>
+
+
+      <div>
+        <span class="indicator offline" id="sensorDot" aria-hidden="true"></span>
+        <p>PIEZO SENSOR</p>
+        <strong id="sensor">UNKNOWN</strong>
+      </div>
+
+
+      <div>
+        <p>SAMPLING RATE</p>
+        <strong id="samplingRate">-- Hz</strong>
+      </div>
+
     </section>
 
-   <p class="connection-help">Connect to <strong>EPSION-LEAK-FINDER</strong> Wi-Fi, then open <code>http://192.168.4.1</code>. The dashboard updates automatically every 500 ms.</p>
-    <noscript><p class="connection-help">JavaScript is required for live monitoring. No live sensor data is available while JavaScript is disabled.</p></noscript>
+
+    <!-- =========================
+         CONNECTION INFORMATION
+    ========================== -->
+    <p class="connection-help">
+      Connect to the ESP32 access point, then open
+      <!-- script.js replaces this with location.origin when served from the device -->
+      <strong id="deviceUrl">http://192.168.4.1</strong>.
+      The dashboard automatically updates every 500 ms.
+    </p>
+
+
+    <!-- =========================
+         JAVASCRIPT FALLBACK
+    ========================== -->
+    <noscript>
+      <p class="connection-help">
+        JavaScript is required for live monitoring.
+        No live sensor data is available while JavaScript is disabled.
+      </p>
+    </noscript>
+
   </main>
-  <script src="script.js"></script>
+
 </body>
 </html>
