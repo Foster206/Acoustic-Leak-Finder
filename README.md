@@ -52,7 +52,7 @@ The ESP32 can also create its own local Wi-Fi access point and provide a dashboa
 
 ## Schematic
 
-![Acoustic Leak Finder Schematic](hardware/schematic/Acoustic_Leak_Finder_Schematic.png)
+![Acoustic Leak Finder Schematic](HARDWARE/schematic/Schematic.png)
 
 ## Key Features
 
