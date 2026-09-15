@@ -50,6 +50,10 @@ ESP32 ADC
 
 The ESP32 can also create its own local Wi-Fi access point and provide a dashboard for monitoring the measurements.
 
+## Schematic
+
+![Acoustic Leak Finder Schematic](hardware/schematic/Acoustic_Leak_Finder_Schematic.png)
+
 ## Key Features
 
 ### Signal Acquisition
